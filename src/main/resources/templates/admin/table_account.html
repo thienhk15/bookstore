@@ -1,0 +1,72 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layouts/admin-main">
+<head>
+    <title>Admin Accounts</title>
+</head>
+
+<div class="sb-nav-fixed" layout:fragment="content">
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Account list</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Tables</li>
+                    </ol>
+<!--                    {{!&#45;&#45; <div class="card mb-4">-->
+<!--                        <div class="card-body">-->
+<!--                            DataTables is a third party plugin that is used to generate the demo table below. For more-->
+<!--                            information about DataTables, please visit the-->
+<!--                            <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>-->
+<!--                            .-->
+<!--                        </div>-->
+<!--                    </div> &#45;&#45;}}-->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            DataTable Account
+                        </div>
+                        <div class="card-body">
+                            <table id="datatablesSimple">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>IsConfirmed</th>
+                                        <th>Date of birth</th>
+                                        <th>Phone</th>
+                                        <th>Role</th>
+                                        <th>Email</th>
+                                        <th>Check details</th>   
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>IsConfirmed</th>
+                                        <th>Date of birth</th>
+                                        <th>Phone</th>
+                                        <th>Role</th>
+                                        <th>Email</th>                                   
+                                        <th>Check details</th>             
+                                    </tr>
+                                </tfoot>
+                                <tbody th:if="${userList!=null || #lists.size(userList) > 0 }">
+                                    <tr th:each="user : ${userList}">
+                                        <td th:text="${user.name}"></td>
+                                        <td>true</td>
+                                        <td th:text="${user.birthday}"></td>
+                                        <td th:text="${user.phone}"></td>
+                                        <td th:text="${user.role}"></td>
+                                        <td th:text="${user.email}"></td>
+                                        <td><a th:href="@{'/admin/accounts/' + ${user.id}}" >Check Details</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+</html>

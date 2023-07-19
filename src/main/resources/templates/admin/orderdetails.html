@@ -1,0 +1,149 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layouts/admin-main">
+<head>
+    <title>Admin Orders</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+    body {
+        background-color: #eeeeee;
+        font-family: 'Open Sans', serif
+    }
+
+    .container {
+        margin-top: 50px;
+        margin-bottom: 50px
+    }
+
+    .card {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0.10rem
+    }
+
+    .card-header:first-child {
+        border-radius: calc(0.37rem - 1px) calc(0.37rem - 1px) 0 0
+    }
+
+    .card-header {
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0;
+        background-color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+    }
+
+    .itemside {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        width: 100%
+    }
+
+    .itemside .aside {
+        position: relative;
+        -ms-flex-negative: 0;
+        flex-shrink: 0
+    }
+
+    .img-sm {
+        width: 80px;
+        height: 80px;
+        padding: 7px
+    }
+
+    ul.row,
+    ul.row-sm {
+        list-style: none;
+        padding: 0
+    }
+
+    .itemside .info {
+        padding-left: 15px;
+        padding-right: 7px
+    }
+
+    .itemside .title {
+        display: block;
+        margin-bottom: 5px;
+        color: #212529
+    }
+
+    p {
+        margin-top: 0;
+        margin-bottom: 1rem
+    }
+
+    .btn-warning {
+        color: #ffffff;
+        background-color: #ee5435;
+        border-color: #ee5435;
+        border-radius: 1px
+    }
+
+    .btn-warning:hover {
+        color: #ffffff;
+        background-color: #ff2b00;
+        border-color: #ff2b00;
+        border-radius: 1px
+    }
+</style>
+</head>
+
+<div class="container" layout:fragment="content">
+    <article class="card">
+        <header class="card-header"> My Orders / Tracking </header>
+        <div class="card-body">
+            <article class="card" th:if="${order!=null}">
+                <div class="card-body row" id ="status">
+                    <div class="col"> <strong>Created At</strong> <br> <span th:text="${order?.createAt}"></span> </div>
+                    <div class="col"> <strong>Phone number:</strong> <br> <span th:text="${order?.phone}"></span> </div>
+                    <div class="col"> <strong>Address:</strong> <br> <span th:text="${order?.address}"></span> </div>
+                    <div class="col"> <strong>Total:</strong> <br> <span th:text="${order?.price}"></span> </div>
+                    <div class="col"> <strong>Status:</strong> <br> <span th:text="${order?.status}"></span></div>
+                </div>
+            </article>
+            <div class="d-flex justify-content-between">
+            </div>
+            <hr>
+            <span class="float right">Update Status </span>
+            <span>
+                <button disabled class="btn btn-sm btn-primary" value="" onclick="markPending(this.value)">
+                <i value="">Mark Pending</i>
+              </button>
+              <button disabled class="btn btn-sm btn-primary" value="" onclick="markShipping(this.value)">
+                <i value="">Mark Shipping</i>
+              </button>
+              <button disabled class="btn btn-sm btn-primary" value="" onclick="markDone(this.value)">
+                <i value="">Mark Done</i>
+              </button>
+            </span>
+            <hr>
+            <ul class="row" th:each="orderItem : ${orderItemList}">
+                <li class="col-md-4">
+                    <figure class="itemside mb-3">
+                        <div class="aside"><img src="https://salt.tikicdn.com/cache/750x750/ts/product/54/35/e1/ba5234c7edfa41531b337c77356a99d0.jpg.webp" class="img-sm border"></div>
+                        <figcaption class="info align-self-center">
+                            <p class="title" th:text="'BookId: ' + ${orderItem.bookId}"> </p> <span class="text-muted" th:text="${orderItem.price + ' VNĐ'}"></span>
+                            <div class="text-muted" th:text="'Quantity: ' + ${orderItem.quantity}"></div>
+                        </figcaption>
+                    </figure>
+                </li>
+            </ul>
+            <hr>
+            <a href="/admin/orders" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i>
+                Back to orders</a>
+        </div>
+    </article>
+</div>

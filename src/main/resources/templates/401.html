@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>401 Unauthorized</title>
+</head>
+<body>
+<div th:include="customer-layout.html :: header"></div>
+<h1>401 Unauthorized</h1>
+<p>This page requires authentication. Please login to access.</p>
+<p>If u are logged in, token may be expired</p>
+<div th:include="customer-layout :: footer"></div>
+</body>
+</html>

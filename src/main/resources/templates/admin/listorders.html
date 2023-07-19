@@ -1,0 +1,64 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layouts/admin-main">
+<head>
+    <title>Admin Orders</title>
+</head>
+<div class="sb-nav-fixed" layout:fragment="content">
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">List orders</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Tables</li>
+                    </ol>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            DataTable Order
+                        </div>
+                        <div class="card-body">
+                            <table id="datatablesSimple">
+                                <thead>
+                                    <tr>
+                                        <th>User Id</th>
+                                        <th>Address</th>
+                                        <th>Phone</th>
+                                        <th>Total Price</th>
+                                        <th>Status</th>
+                                        <th>Create At</th>
+                                        <th>Check Details</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>User Id</th>
+                                        <th>Address</th>
+                                        <th>Phone</th>
+                                        <th>Total Price</th>
+                                        <th>Status</th>
+                                        <th>Create At</th>
+                                        <th>Check Details</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody th:if="${orderList!=null || #lists.size(orderList) > 0 }">
+                                    <tr th:each="order : ${orderList}">
+                                        <td th:text="${order.userId}"></td>
+                                        <td th:text="${order.address}"></td>
+                                        <td th:text="${order.phone}"></td>
+                                        <td th:text="${order.price}"></td>
+                                        <td th:text="${order.status?}"></td>
+                                        <td th:text="${order.createAt?}"></td>
+                                        <td><a th:href="@{'/admin/orders/' + ${order.id}}" >Check Details</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+</html>

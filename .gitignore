@@ -1,4 +1,12 @@
 # Compiled class file
+/target/
+.idea/
+.vscode/
+.log
+/build/
+/.mvn/wrapper
+/classpath
+/project
 *.class
 
 # Log file

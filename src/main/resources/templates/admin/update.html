@@ -1,0 +1,50 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layouts/admin-main">
+<head>
+    <title>Admin Accounts</title>
+</head>
+<div class="sb-nav-fixed" layout:fragment="content">
+    <div id="layoutSidenav_content" >
+        <main>
+            <div class="update">
+                <div class="avt">
+                    <img src="https://i.pinimg.com/564x/26/3b/a4/263ba4d1695310f527059aec06661bcd.jpg" width="50%" alt="avatar" >
+                </div>
+                <div class="info" th:if="${user!=null}">
+                    <div>Name:&ensp;<span th:text="${user.name}"></span> </div>
+                    <div>Date of birth:&ensp;<span th:text="${user.birthday}"></span></div>
+                    <div>Phone number:&ensp;<span th:text="${user.phone}"></span></div>
+
+                </div>
+                <br><br><br>
+                <div class="edit_info" th:if="${user!=null}">
+                    <div>Edit Profile:</div>
+                    <form method="post">
+                        <div>
+                            Name: <input type="text" placeholder="Nguyen Van A" name="name">
+                        </div>                        
+                        <div>
+                            Date of birth: <input type="text" placeholder="2001-01-01" name="dob">
+                        </div>
+                        <div>
+                            Phone number: <input type="tel" placeholder="0903123456" name="phone">
+                        </div>                        
+                        <div>
+                            <div>
+                                Password: <input type="password" placeholder="Enter your password" name="pass">
+                                <span style="color: red">{{message}}</span>
+                            </div>                            
+                            <div>
+                                New password: <input type="password" placeholder="Enter your new password" name="pass1">
+                            </div>                            
+                            <div>
+                                New password again: <input type="password" placeholder="Enter your new password" name="pass2">
+                            </div>                            
+                        </div>  
+                        <input type="submit" value="Update infomation">                      
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

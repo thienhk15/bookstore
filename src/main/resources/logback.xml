@@ -1,0 +1,27 @@
+<configuration>
+    <!-- Thiết lập ghi log ra console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Thiết lập ghi log ra file -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/query.log</file> <!-- Đường dẫn đến file log -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Thiết lập logger cho class YourClass -->
+    <logger name="com.thien.app.service.impl.UserDetailsServiceImpl" level="DEBUG">
+        <appender-ref ref="CONSOLE"/> <!-- Ghi log ra console -->
+        <appender-ref ref="FILE"/> <!-- Ghi log ra file -->
+    </logger>
+
+    <!-- Thiết lập log level mặc định cho tất cả các logger khác -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/> <!-- Ghi log ra console -->
+    </root>
+</configuration>
