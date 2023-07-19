@@ -1,33 +1,27 @@
 pipeline {
-agent {
-node {
-label 'docker-pipeline'
-}
-}
-stages {
-stage('Build') {
-steps {
-echo "Building.."
-sh '''
-echo "doing build stuff.."
-'''
-}
-}
-stage('Test') {
-steps {
-echo "Testing.."
-sh '''
-echo "doing test stuff.."
-'''
-}
-}
-stage('Deliver') {
-steps {
-echo 'Deliver....'
-sh '''
-echo "doing delivery stuff.."
-'''
-}
-}
-}
+  agent any
+  stages {
+    stage('Checkout') {
+      steps {
+        git 'https://github.com/thienhk15/bookstore.git'
+      }
+    }
+    stage('Build') {
+      steps {
+        docker build -t bookstore .
+      }
+    }
+    stage('Push') {
+      steps {
+        docker tag bookstore thienhk15/bookstore
+        docker push thienhk15/bookstore
+      }
+    }
+    stage('Deploy') {
+          steps {
+            docker rm bookstore-image
+            docker run -d --name bookstore-image -p 80:8080 bookstore
+          }
+        }
+  }
 }
