@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/thienhk15/bookstore.git'
+        git branch: 'main', url: 'https://github.com/thienhk15/bookstore.git'
       }
     }
     stage('Build') {
