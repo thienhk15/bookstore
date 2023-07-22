@@ -4,7 +4,7 @@ pipeline {
     DOCKER_IMAGE = "nhtua/flask-docker"
   }
   stages {
-    stage('Checkout') {
+    stage('checkout') {
       steps {
         git branch: 'main', url: 'https://github.com/thienhk15/bookstore.git'
       }
