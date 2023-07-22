@@ -1,5 +1,8 @@
 pipeline {
-  agent any
+  agent none
+  environment{
+    DOCKER_IMAGE = "nhtua/flask-docker"
+  }
   stages {
     stage('Checkout') {
       steps {
