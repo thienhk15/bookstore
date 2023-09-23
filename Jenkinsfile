@@ -1,8 +1,8 @@
 pipeline {
   agent any
-  environment{
-    DOCKER_IMAGE = "nhtua/flask-docker"
-  }
+  tools {
+        my-maven
+    }
   stages {
     stage('checkout') {
       steps {
