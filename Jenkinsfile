@@ -18,7 +18,7 @@ pipeline {
     }
     stage('Push') {
       steps {
-        withDockerRegistry(credentialsId: 'docker-thienhk15', url: 'hub.docker.com') {
+        withDockerRegistry(credentialsId: 'docker-thienhk15', url: 'https://index.docker.io/v1/') {
           sh 'docker version'
           sh 'docker build -t bookstore .'
           sh 'docker tag bookstore thienhk15/bookstore'
