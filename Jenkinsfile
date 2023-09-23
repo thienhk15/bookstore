@@ -11,6 +11,8 @@ pipeline {
     }
     stage('Build') {
       steps {
+        sh 'mvn --version'
+        sh 'java --version'
         sh 'mvn clean package -Dmaven.test.failure.ignore=true -e'
         sh 'docker version'
         sh 'docker build -t bookstore .'
