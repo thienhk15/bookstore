@@ -14,20 +14,22 @@ pipeline {
         sh 'mvn --version'
         sh 'java --version'
         sh 'mvn clean package -Dmaven.test.failure.ignore=true -e'
-        sh 'docker version'
-        sh 'docker build -t bookstore .'
       }
     }
     stage('Push') {
       steps {
-        sh 'docker tag bookstore thienhk15/bookstore'
-        sh 'docker push thienhk15/bookstore'
+        withDockerRegistry(credentials: 'docker-thienhk15', url: 'hub.docker.com') {
+          sh 'docker version'
+          sh 'docker build -t bookstore .'
+          sh 'docker tag bookstore thienhk15/bookstore'
+          sh 'docker push thienhk15/bookstore'
+        }
       }
     }
     stage('Deploy') {
       steps {
-        sh 'docker rm bookstore-image'
-        sh 'docker run -d --name bookstore-image -p 80:8080 bookstore'
+        sh 'docker rm web -f'
+        sh 'docker run -d --name web -p 80:3000 bookstore'
       }
     }
   }
