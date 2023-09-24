@@ -29,7 +29,7 @@ pipeline {
     stage('Deploy') {
       steps {
         sh 'docker rm web -f'
-        sh 'docker run -d --name web -p 80:3000 bookstore'
+        sh 'docker run -d --name web -p 3000:3000 bookstore'
       }
     }
   }
