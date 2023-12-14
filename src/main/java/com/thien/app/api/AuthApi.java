@@ -1,13 +1,12 @@
 package com.thien.app.api;
 
-import com.thien.app.dto.JWTAuthResponse;
-import com.thien.app.dto.LoginDto;
-import com.thien.app.dto.RegisterDto;
+import com.thien.app.dto.*;
 import com.thien.app.entity.RefreshToken;
 import com.thien.app.entity.User;
 import com.thien.app.enums.Role;
 import com.thien.app.repository.UserRepository;
 import com.thien.app.security.JwtTokenProvider;
+import com.thien.app.security.exception.TokenRefreshException;
 import com.thien.app.service.RefreshTokenService;
 import com.thien.app.service.UserService;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -16,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -102,4 +102,20 @@ public class AuthApi {
 
         //return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
+
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<?> refreshtoken(@Valid @RequestBody RefreshTokenRequest request) {
+        String requestRefreshToken = request.getRefreshToken();
+
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService.verifyExpiration())
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    String token = refreshTokenService.createRefreshToken(user.get);
+                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                })
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                        "Refresh token is not in database!"));
+    }
+}
 }
