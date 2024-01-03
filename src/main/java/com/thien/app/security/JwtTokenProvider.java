@@ -1,13 +1,12 @@
 package com.thien.app.security;
 
-import com.sun.security.auth.UserPrincipal;
+import com.thien.app.entity.RefreshToken;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -23,27 +22,26 @@ public class JwtTokenProvider {
     private long jwtExpirationDate;
     @Value("${app.jwt-refresh-expiration-ms}")
     private Long refreshTokenDurationMs;
-    public String generateRefreshToken(Authentication authentication){
-        String username = authentication.getName();
+    public RefreshToken generateRefreshToken(Long userId){
         Date currentDate = new Date();
-        Date expireDate = new Date(currentDate.getTime() + refreshTokenDurationMs);
+        Date expiredDate = new Date(currentDate.getTime() + refreshTokenDurationMs);
         String token = Jwts.builder()
-                .setSubject(username)
+                .setSubject(userId.toString())
                 .setIssuedAt(new Date())
-                .setExpiration(expireDate)
+                .setExpiration(expiredDate)
                 .signWith(key())
                 .compact();
-        return token;
+        RefreshToken refreshToken = new RefreshToken(userId, token, expiredDate);
+        return refreshToken;
     }
-    public String generateToken(Authentication authentication){
-        String username = authentication.getName();
+    public String generateToken(Long userId){
 
         Date currentDate = new Date();
 
         Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
 
         String token = Jwts.builder()
-                .setSubject(username)
+                .setSubject(userId.toString())
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
                 .signWith(key())
@@ -58,14 +56,15 @@ public class JwtTokenProvider {
     }
 
     // get username from Jwt token
-    public String getUsername(String token){
+    public Long getUserId(String token){
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        String username = claims.getSubject();
-        return username;
+        String id = claims.getSubject();
+        Long userId = Long.parseLong(id);
+        return userId;
     }
 
     // validate Jwt token

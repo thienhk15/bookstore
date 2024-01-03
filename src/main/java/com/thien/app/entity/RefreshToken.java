@@ -1,6 +1,7 @@
 package com.thien.app.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "refreshtoken")
 public class RefreshToken {
     @Id
@@ -24,8 +26,13 @@ public class RefreshToken {
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date expiryDate;
+    private Date expiredDate;
 
+    public RefreshToken(Long userId, String token, Date expiredDate) {
+        this.userId = userId;
+        this.token = token;
+        this.expiredDate = expiredDate;
+    }
 
     //getters and setters
 

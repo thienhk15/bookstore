@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
@@ -29,25 +28,19 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public RefreshToken createRefreshToken(Long userId) {
-        RefreshToken refreshToken = new RefreshToken();
-        Date currentDate = new Date();
-
-        refreshToken.setUserId(userRepository.findById(userId).get().getId());
-        refreshToken.setExpiryDate(new Date(currentDate.getTime() + refreshTokenDurationMs));
-        refreshToken.setToken(UUID.randomUUID().toString());
-
-        refreshToken = refreshTokenRepository.save(refreshToken);
+    public RefreshToken createRefreshToken(Long userId, String token, Date expiredDate) {
+        RefreshToken refreshToken = new RefreshToken(userId, token, expiredDate);
+        refreshTokenRepository.save(refreshToken);
         return refreshToken;
     }
 
     @Override
-    public RefreshToken verifyExpiration(RefreshToken refreshToken) {
-        if (refreshToken.getExpiryDate().compareTo(Date.from(Instant.now())) < 0) {
+    public boolean verifyExpiration(RefreshToken refreshToken) {
+        if (refreshToken.getExpiredDate().compareTo(Date.from(Instant.now())) < 0) {
             refreshTokenRepository.delete(refreshToken);
-            throw new TokenRefreshException(refreshToken.getToken(), "Refresh token was expired. Please make a new signin request");
+            throw new TokenRefreshException(refreshToken.getToken(), "Refresh token was expired");
         }
-        return refreshToken;
+        return true;
     }
 
     @Override
